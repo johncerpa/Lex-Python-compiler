@@ -1,9 +1,23 @@
 %{
+#include <ctype.h>
 int variables = 0;
+
+void convertirAMayus(char *temp) {
+  char* name;
+  name = strtok(temp,":");
+
+  char *s = name;
+  while (*s) {
+    *s = toupper((unsigned char) *s);
+    s++;
+  }
+}
 %}
 
 %%
-[a-zA-Z_$][a-zA-Z_$0-9]* { printf("%s Variable:\n", yytext); variables++; }
+def { convertirAMayus(yytext); printf("%s Definicion de funcion\n", yytext); }
+
+[a-zA-Z_$][a-zA-Z_$0-9]* { printf("%s Variable\n", yytext); variables++; }
 
 . { printf("%s No mayuscula\n", yytext); }
 %%
@@ -19,7 +33,7 @@ int main(int argc, char* argv[]) {
   yyset_in(archivo);
   yylex();
 
-  printf("\Variables: %d\n", variables);
+  printf("Variables: %d\n", variables);
 
   fclose(archivo);
 
