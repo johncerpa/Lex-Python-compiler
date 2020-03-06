@@ -27,6 +27,8 @@ int yywrap() {}
 int main(int argc, char* argv[]) {
 
   FILE *archivo;
+
+  /* /.a.out archivo.py */
   char const* const nombreArchivo = argv[1];
   archivo = fopen(nombreArchivo, "r");
 
