@@ -33,7 +33,7 @@ int main(int argc, char* argv[]) {
   yyset_in(archivo);
   yylex();
 
-  printf("Variables: %d\n", variables);
+  printf("Numero de variables: %d\n", variables);
 
   fclose(archivo);
 
