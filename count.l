@@ -1,9 +1,9 @@
 %{
-int mayusculas = 0;
+int variables = 0;
 %}
 
 %%
-[A-Z] { printf("%s Mayuscula:\n", yytext); mayusculas++; }
+[a-zA-Z_$][a-zA-Z_$0-9]* { printf("%s Variable:\n", yytext); variables++; }
 
 . { printf("%s No mayuscula\n", yytext); }
 %%
@@ -14,12 +14,12 @@ int main(int argc, char* argv[]) {
 
   FILE *archivo;
   char const* const nombreArchivo = argv[1];
-
   archivo = fopen(nombreArchivo, "r");
+
   yyset_in(archivo);
   yylex();
 
-  printf("\nMayusculas: %d\n", mayusculas);
+  printf("\Variables: %d\n", variables);
 
   fclose(archivo);
 
