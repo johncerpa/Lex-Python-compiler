@@ -1,4 +1,4 @@
 def main():
   i = 5L + 3
-  "HOLA MUNDOOO\n"
+  part =? True
   return "Hola mundo"

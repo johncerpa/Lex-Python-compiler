@@ -1,9 +1,41 @@
 %{
+#include <stdio.h>
+#include <string.h>
 int i = 0;
+int errores = 0;
+char *palabras[100];
+
+void Comparar(char* palabras[]) {
+  int j = 0, s = 1;
+  char *palabra = yytext;
+  while(s!=0 && j<i){ 
+    char* aux = palabras[j];
+    s = strcmp(palabra, aux);
+    if(s == 0)
+      printf(" id%d=%s", j+1, palabras[j]);
+    j++; 
+  }
+  
+  if (i == j && s != 0) { 
+    palabras[i] = malloc(10*sizeof(palabra));
+    strcpy(palabras[i], palabra);
+    printf(" id%d=%s", i+1, palabras[i]);
+    i++;
+  }
+
+}
+void mostrarId(){
+  printf("\nn= %d\n", i);
+  for(int a = 0;a<i; a = a+1){
+    printf(" id%d=%s\n", a+1,palabras[a]);
+  }
+
+}
+
 %}
 digit     [0-9]
 letter    [A-Za-z]
-id        {letter}({letter}|{digit})*
+id         ("_"|{letter})({letter}|{digit}|"_")*
 entero    [+|-]?{digit}+
 %%
 "if"           {printf("IF");} ;
@@ -23,37 +55,51 @@ entero    [+|-]?{digit}+
 "print"        {printf("PRINT");} ;
 "return"       {printf("RETURN");} ;
 "while"        {printf("WHILE");} ;
-\"(.*?)\"      {printf("cadena=%s", yytext);};
-\'(.*?)\'      {printf("cadena=%s", yytext);};
-{id}           {printf("id%d=%s", i, yytext); i = i+1;};
-"+"            {printf("suma=+");};
-"-"            {printf("resta=-");};
-"*"            {printf("mult=*");};
-"**"           {printf("exp=**");};
-"/"            {printf("div=/");};
-"//"            {printf("divEntera=//");};
-"%"            {printf("mod=porc");};
-"<<"            {printf("shiftIzq= <<");};
-">>"            {printf("shiftDer= >>");};
-"&"            {printf("binAnd=&");};
-"|"            {printf("binOr=|");};
-"^"            {printf("XOR=^");};
-"~"            {printf("not=~");};
-"<"            {printf("menorQue= <");};
-">"            {printf("mayorQue= >");};
-"<="            {printf("menorOigual= <=");};
-">="            {printf("mayorOigual= >=");};
-"=="            {printf("igualQue= ==");};
-"!="            {printf("diferenteQue= !=");};
-"<>"            {printf("diferenteQue= <>");};
-{entero}       {printf("entero=%s", yytext);};
-{entero}[L|l]  {printf("enteroLong=%s", yytext);};
+"+"            {printf(" suma=+");};
+"-"            {printf(" resta=-");};
+"*"            {printf(" mult=*");};
+"**"           {printf(" exp=**");};
+"/"            {printf(" div=/");};
+"//"            {printf(" divEntera=/ /");};
+"%"            {printf(" mod=porc");};
+"<<"            {printf(" shiftIzq= <<");};
+">>"            {printf(" shiftDer= >>");};
+"&"            {printf(" binAnd=&");};
+"|"            {printf(" binOr=|");};
+"^"            {printf(" XOR=^");};
+"~"            {printf(" not=~");};
+"<"            {printf(" menorQue= <");};
+">"            {printf(" mayorQue= >");};
+"<="           {printf(" menorOigual= <=");};
+">="           {printf(" mayorOigual= >=");};
+"=="           {printf(" igualQue= ==");};
+"!="           {printf(" diferenteQue= !=");};
+"<>"           {printf(" diferenteQue= <>");};
+"range"        {printf(" RANGE");};
+"True"         {printf(" TRUE");};
+"False"        {printf(" FALSE");};
+"("            {printf(" parabre=(");};
+")"            {printf(" parcierr=)");};
+"="             {printf(" asign= =");};
+"["            {printf(" corabre=[");};
+"]"            {printf(" corcierr=]");};
+":"            {printf(" dospunt=:");};
+","            {printf(" coma=,");};
+("\"")(.*)("\"")      {printf("cadena=%s", yytext);};
+("'")(.*)("'")      {printf("cadena=%s", yytext);};
+{id}           {Comparar(palabras);};
+"#".*          { /* DO NOTHING */ };      
+{entero}       {printf(" entero=%s", yytext);};
+{entero}[L|l]  {printf(" enteroLong=%s", yytext);};
+[-+]?[0-9]*\.?[0-9]+([eE][-+]?[0-9]+)? {printf(" Real=%s", yytext);};
+[-+]?[0-9]*\.?[0-9]+([jJ])             {printf(" Imaginario=%s", yytext);};
+" " {};
+. {printf("ERROR=%s", yytext); errores++;}
+
 %%
 
-int yywrap() {}
-
 int main(int argc, char* argv[]) {
-
+  
   FILE *archivo;
 
   /* ./a.out archivo.py */
@@ -62,6 +108,9 @@ int main(int argc, char* argv[]) {
 
   yyset_in(archivo);
   yylex();
+  mostrarId();
+
+  printf("Numero de errores: %d\n", errores);
 
   fclose(archivo);
 
