@@ -12,7 +12,7 @@ void Comparar(char* palabras[]) {
     char* aux = palabras[j];
     s = strcmp(palabra, aux);
     if(s == 0)
-      printf(" id%d=%s", j+1, palabras[j]);
+      printf(" id%d=%s ", j+1, palabras[j]);
     j++; 
   }
   
@@ -36,25 +36,25 @@ void mostrarId(){
 digit     [0-9]
 letter    [A-Za-z]
 id         ("_"|{letter})({letter}|{digit}|"_")*
-entero    [+|-]?{digit}+
+entero    {digit}+
 %%
-"if"           {printf("IF");} ;
-"and"          {printf("AND");} ;
-"break"        {printf("BREAK");} ;
-"continue"     {printf("CONTINUE");} ;
-"def"          {printf("DEF");} ;
-"elif"         {printf("ELIF");} ;
-"else"         {printf("ELSE");} ;
-"for"          {printf("FOR");} ;
-"import"       {printf("IMPORT");} ;
-"in"           {printf("IN");} ;
-"is"           {printf("IS");} ;
-"not"          {printf("NOT");} ;
-"or"           {printf("OR");} ;
-"pass"         {printf("PASS");} ;
-"print"        {printf("PRINT");} ;
-"return"       {printf("RETURN");} ;
-"while"        {printf("WHILE");} ;
+"if"           {printf("IF");};
+"and"          {printf("AND");};
+"break"        {printf("BREAK");};
+"continue"     {printf("CONTINUE");};
+"def"          {printf("DEF");};
+"elif"         {printf("ELIF");};
+"else"         {printf("ELSE");};
+"for"          {printf("FOR");};
+"import"       {printf("IMPORT");};
+"in"           {printf("IN");};
+"is"           {printf("IS");};
+"not"          {printf("NOT");};
+"or"           {printf("OR");};
+"pass"         {printf("PASS");};
+"print"        {printf("PRINT");};
+"return"       {printf("RETURN");};
+"while"        {printf("WHILE");};
 "+"            {printf(" suma=+");};
 "-"            {printf(" resta=-");};
 "*"            {printf(" mult=*");};
@@ -85,17 +85,16 @@ entero    [+|-]?{digit}+
 "]"            {printf(" corcierr=]");};
 ":"            {printf(" dospunt=:");};
 ","            {printf(" coma=,");};
-("\"")(.*)("\"")      {printf("cadena=%s", yytext);};
-("'")(.*)("'")      {printf("cadena=%s", yytext);};
+("\"")([^"\n"]*)("\"")      {printf(" cadena=%s", yytext);};
+("'")([^"\n"]*)("'")      {printf(" cadena=%s", yytext);};
 {id}           {Comparar(palabras);};
 "#".*          { /* DO NOTHING */ };      
 {entero}       {printf(" entero=%s", yytext);};
 {entero}[L|l]  {printf(" enteroLong=%s", yytext);};
-[-+]?[0-9]*\.?[0-9]+([eE][-+]?[0-9]+)? {printf(" Real=%s", yytext);};
-[-+]?[0-9]*\.?[0-9]+([jJ])             {printf(" Imaginario=%s", yytext);};
-" " {};
-. {printf("ERROR=%s", yytext); errores++;}
-
+[0-9]*\.?[0-9]+([eE[0-9]+)? {printf(" Real=%s", yytext);};
+[0-9]*\.?[0-9]+([jJ])             {printf(" Imaginario=%s", yytext);};
+" "+ {};
+. {printf("ERROR=%s", yytext);}
 %%
 
 int main(int argc, char* argv[]) {
