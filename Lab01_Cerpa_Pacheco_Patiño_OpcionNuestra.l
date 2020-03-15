@@ -85,8 +85,8 @@ entero    {digit}+
 "]"            {printf(" corcierr=]");};
 ":"            {printf(" dospunt=:");};
 ","            {printf(" coma=,");};
-("\"")([^"\n"]*)("\"")      {printf(" cadena=%s", yytext);};
-("'")([^"\n"]*)("'")      {printf(" cadena=%s", yytext);};
+("\"")([^\"\']*)("\"")      {printf(" cadena=%s", yytext);};
+("'")([^\"\']*)("'")      {printf(" cadena=%s", yytext);};
 {id}           {Comparar(palabras);};
 "#".*          { /* DO NOTHING */ };      
 {entero}       {printf(" entero=%s", yytext);};
