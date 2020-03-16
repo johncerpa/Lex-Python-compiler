@@ -1,5 +1,6 @@
 def main():
   ans = False
+  var = 3000
   for i in range(len(exp)):
     part =? True
     for j in range(len(exp[i])):
@@ -12,7 +13,8 @@ def main():
         break
         def otra_fun():
           pass
-          print('Esta es la respuesta',con, 'y la expresión ', 3*i+5*(7-x))
+          print('Esta es la respuesta
+          ',con, 'y la expresión ', 3*i+5*(7-x))
           #strings
           table = []
           y = []

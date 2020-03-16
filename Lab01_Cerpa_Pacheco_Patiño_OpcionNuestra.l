@@ -85,8 +85,8 @@ entero    {digit}+
 "]"            {printf(" corcierr=]");};
 ":"            {printf(" dospunt=:");};
 ","            {printf(" coma=,");};
-("\"")([^\"\']*)("\"")      {printf(" cadena=%s", yytext);};
-("'")([^\"\']*)("'")      {printf(" cadena=%s", yytext);};
+["]([^"]|\\(.|["\n"]))*["]      {printf(" cadena=%s", yytext);};
+[']([^']|\\(.|["\n"]))*[']     {printf(" cadena=%s", yytext);};
 {id}           {Comparar(palabras);};
 "#".*          { /* DO NOTHING */ };      
 {entero}       {printf(" entero=%s", yytext);};
@@ -94,7 +94,7 @@ entero    {digit}+
 [0-9]*\.?[0-9]+([eE[0-9]+)? {printf(" Real=%s", yytext);};
 [0-9]*\.?[0-9]+([jJ])             {printf(" Imaginario=%s", yytext);};
 " "+ {};
-. {printf("ERROR=%s", yytext);}
+. {printf("ERROR=%s", yytext); errores++;}
 %%
 
 int main(int argc, char* argv[]) {
